@@ -1,6 +1,6 @@
 import unittest
 import torch
-from g2p_fa.utils import (word2tensor, tensor2IPA)
+from g2p_fa.utils import (word2tensor, tensor2IPA, IPA2tensor)
 
 class TestDataLoader(unittest.TestCase):
     def test_word2tensor(self):
@@ -10,6 +10,13 @@ class TestDataLoader(unittest.TestCase):
         for word, tensor in words_tuples:
             self.assertTrue(torch.equal(word2tensor(word, 5), torch.tensor(tensor, dtype=torch.long)))
     
+    def test_IPA2tensor(self):
+        words_tuples = [
+            ('bed', [1,3,5,4,2,0,0])
+        ]
+        for IPA, tensor in words_tuples:
+            self.assertTrue(torch.equal(IPA2tensor(IPA, 7), torch.tensor(tensor, dtype=torch.long)))
+
     def test_tensor2word(self):
         t2w_tuples = [
             ('bed', [1,3,5,4,2,0,0])

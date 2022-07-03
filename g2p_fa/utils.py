@@ -24,6 +24,9 @@ END = 2
 def fa_letter2tensor(letter):
     return FA_LETTERS.find(letter) + 3
 
+def IPA_letter2tensor(letter):
+    return IPA_LETTERS.find(letter) + 3
+
 def word2tensor(word, max_len):
     word_tensor = torch.zeros(max_len, dtype=torch.long)
     word_tensor[0] = START
@@ -31,6 +34,14 @@ def word2tensor(word, max_len):
         word_tensor[i+1] = fa_letter2tensor(letter)
     word_tensor[len(word)+1] = END
     return word_tensor
+
+def IPA2tensor(IPA, max_len):
+    IPA_tensor = torch.zeros(max_len, dtype=torch.long)
+    IPA_tensor[0] = START
+    for i, letter in enumerate(IPA):
+        IPA_tensor[i+1] = IPA_letter2tensor(letter)
+    IPA_tensor[len(IPA)+1] = END
+    return IPA_tensor
 
 def tensor2IPA(tensor):
     idx = 1
