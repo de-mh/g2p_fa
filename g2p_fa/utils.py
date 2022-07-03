@@ -1,6 +1,3 @@
-from lib2to3.pgen2.token import STAR
-from tracemalloc import start
-from numpy import dtype
 import torch
 from torch.utils.data import Dataset
 
