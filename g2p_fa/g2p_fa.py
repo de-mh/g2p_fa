@@ -23,6 +23,8 @@ class G2P_Fa:
     def train(self, data, epoch = 20, CLIP = 1):
         optimizer = optim.Adam(self.model.parameters())
         criterion = nn.CrossEntropyLoss()
+        self.model.train()
+
         for i in range(epoch):
             epoch_loss = 0
             for batch in data:
@@ -44,6 +46,8 @@ class G2P_Fa:
 
                 epoch_loss += loss.item()
             print(f'Train Loss: {epoch_loss/len(data):.3f}')
+        self.model.eval()
+
     def __call__(self, word):
         word_vector = self.w2v(word)
         output_vector = self.model(word_vector)
