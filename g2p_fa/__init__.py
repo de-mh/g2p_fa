@@ -1,0 +1,1 @@
+from g2p_fa.g2p_fa import G2P_Fa

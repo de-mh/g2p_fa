@@ -1,6 +1,8 @@
 from g2p_fa.model import (Encoder, Decoder, Seq2Seq)
 from g2p_fa.hparams import hparams as hp
 import torch
+import torch.nn as nn
+import torch.optim as optim
 
 MODEL_PATH = ''
 
@@ -15,14 +17,39 @@ class G2P_Fa:
         dec = Decoder(hp['OUTPUT_DIM'], hp['DEC_EMB_DIM'], hp['HID_DIM'], hp['N_LAYERS'], hp['DEC_DROPOUT'])
 
         self.model = Seq2Seq(enc, dec, self.device).to(self.device)
+        if checkpoint:
+            self.model.load_state_dict(torch.load(checkpoint))
 
-        self.model.load_state_dict(torch.load(checkpoint))
+    def train(self, data, epoch = 20, CLIP = 1):
+        optimizer = optim.Adam(self.model.parameters())
+        criterion = nn.CrossEntropyLoss()
+        for i in range(epoch):
+            epoch_loss = 0
+            for batch in data:
+                optimizer.zero_grad()
 
-    def train(self):
-        pass
+                src = batch.features
+                trg = batch.labels
 
-    def __call__(self, text):
-        pass
+                output = self.model(src, trg)
+                output = output[1:].view(-1, hp['OUTPUT_DIM'])
+                trg = trg[1:].view(-1)
+
+                loss = criterion(output, trg)
+        
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), CLIP)
+
+                optimizer.step()
+
+                epoch_loss += loss.item()
+            print(f'Train Loss: {epoch_loss/len(data):.3f}')
+    def __call__(self, word):
+        word_vector = self.w2v(word)
+        output_vector = self.model(word_vector)
+        output_word = self.v2w(output_vector)
+
+        return output_word
 
     def save(self, PATH=""):
         torch.save(self.model.state_dict(), PATH)
