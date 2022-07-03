@@ -1,5 +1,6 @@
 from g2p_fa.model import (Encoder, Decoder, Seq2Seq)
 from g2p_fa.hparams import hparams as hp
+from g2p_fa.utils import (tensor2IPA, word2tensor, WordDataset)
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -49,9 +50,9 @@ class G2P_Fa:
         self.model.eval()
 
     def __call__(self, word):
-        word_vector = self.w2v(word)
+        word_vector = word2tensor(word).to(torch.device)
         output_vector = self.model(word_vector)
-        output_word = self.v2w(output_vector)
+        output_word = tensor2IPA(output_vector)
 
         return output_word
 
