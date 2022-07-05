@@ -18,7 +18,7 @@ class G2P_Fa:
 
         self.model = Seq2Seq(enc, dec, self.device).to(self.device)
         if checkpoint:
-            self.model.load_state_dict(torch.load(checkpoint))
+            self.model.load_state_dict(torch.load(checkpoint, map_location=self.device))
 
     def train(self, data, epoch = 20, CLIP = 1):
         ds = WordDataset(data)
