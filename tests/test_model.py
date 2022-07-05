@@ -16,7 +16,6 @@ class TestModel(unittest.TestCase):
     def test_model(self):
         g2p = G2P_Fa()
         samples = [
-            ('استراق', 'ʔestʰeɾɒːq'),
             ('طلا', 'tʰælɒː'),
             ('تلاش', 'tʰælɒːʃ')
         ]
