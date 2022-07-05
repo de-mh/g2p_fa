@@ -1,13 +1,18 @@
+import os
 import torch
 from torch.utils.data import Dataset
 
+MAX_LEN = 30
+THIS_DIR, _ = os.path.split(__file__)
+MODEL_PATH = os.path.join(THIS_DIR, "data/weights")
+
 class WordDataset(Dataset):
-    def __init__(self, data_file, img_dir):
+    def __init__(self, data_file):
         self.data = []
         with open(data_file, 'r', encoding='utf-8') as f:
             for line in f:
                 word, IPA = line.strip().split(',')
-                self.data.append((word, IPA))
+                self.data.append((word2tensor(word, MAX_LEN),IPA2tensor(IPA, MAX_LEN)))
 
     def __len__(self):
         return len(self.data)
@@ -27,7 +32,7 @@ def fa_letter2tensor(letter):
 def IPA_letter2tensor(letter):
     return IPA_LETTERS.find(letter) + 3
 
-def word2tensor(word, max_len):
+def word2tensor(word, max_len=MAX_LEN):
     word_tensor = torch.zeros(max_len, dtype=torch.long)
     word_tensor[0] = START
     for i, letter in enumerate(word):
@@ -35,7 +40,7 @@ def word2tensor(word, max_len):
     word_tensor[len(word)+1] = END
     return word_tensor
 
-def IPA2tensor(IPA, max_len):
+def IPA2tensor(IPA, max_len=MAX_LEN):
     IPA_tensor = torch.zeros(max_len, dtype=torch.long)
     IPA_tensor[0] = START
     for i, letter in enumerate(IPA):
