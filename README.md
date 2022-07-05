@@ -9,7 +9,6 @@ A Grapheme to Phoneme model using LSTM implemented in pytorch
 ## Usage:
 
 ```
-
 >>> from g2p_fa import G2P_Fa
 >>> g2p = G2P_Fa()
 >>> g2p('سلام')
@@ -18,20 +17,31 @@ A Grapheme to Phoneme model using LSTM implemented in pytorch
 'tʰælɒː'
 >>> g2p('تلاش')
 'tʰælɒːʃ'
-
 ```
 ## Training
 
 Create a csv file with Persian text at the first column and IPA in second colmn. for example:
 
-`ابتکار,ʔebtʰekʰɒːɾ`
-
+```
+ابتکار,ʔebtʰekʰɒːɾ
+```
+To change the hyperparameters, you can pass them as a dict to the model:
+```
+>>> hp = {
+    'INPUT_DIM' : 41,
+    'OUTPUT_DIM' : 33,
+    'ENC_EMB_DIM' : 16,
+    'DEC_EMB_DIM' : 16,
+    'HID_DIM' : 128,
+    'N_LAYERS' : 2,
+    'ENC_DROPOUT' : 0.5,
+    'DEC_DROPOUT' : 0.5
+}
+```
 Then create an instance of 'G2P_Fa' wihout loading checkpoint:
 ```
-
 >>> from g2p_fa import G2P_Fa
->>> g2p = G2P_Fa(checkpoint=None)
-
+>>> g2p = G2P_Fa(checkpoint=None, hparams=hp)
 ```
 And then train the model with csv file:
 ```
@@ -65,5 +75,5 @@ Then you can save the model:
 ```
 For using your saved model you have to pass the checkpoint
 ```
->>> g2p = G2P_Fa(checkpoint='SAVE_PATH')
+>>> g2p = G2P_Fa(checkpoint='SAVE_PATH',hparams=hp)
 ```
