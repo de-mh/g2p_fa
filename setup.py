@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="g2p_fa",
-    version="1.0.0",
+    version="1.1.0",
     author="Mohamadhosein Dehghani",
     author_email="demh1377@gmail.com",
     description="A Persian Grapheme to Phoneme model using LSTM implemented in pytorch",
