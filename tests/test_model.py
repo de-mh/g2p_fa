@@ -16,8 +16,10 @@ class TestModel(unittest.TestCase):
     def test_model(self):
         g2p = G2P_Fa()
         samples = [
-            ('طلا', 'tʰælɒː'),
-            ('تلاش', 'tʰælɒːʃ')
+            ('مشتری', 'moʃtʰæɾiː'),
+            ('سلام', 'sælɒːm'),
+            ('تلاش', 'tʰælɒːʃ'),
+            ('شور', 'ʃuːɾ')
         ]
         for input, output in samples:
             self.assertEqual(g2p(input), output)
